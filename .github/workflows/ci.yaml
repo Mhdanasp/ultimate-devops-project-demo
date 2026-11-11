@@ -26,10 +26,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Go 1.22
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.22.9'
           cache-dependency-path: src/product-catalog/go.sum
 
       - name: Download dependencies
@@ -52,7 +52,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Go 1.22
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.22.9'
@@ -64,13 +64,16 @@ jobs:
           version: v1.64.8
           working-directory: src/product-catalog
           args: --timeout=5m
+          skip-cache: true
 
   docker:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    needs: [build, code-quality]
 
-    # Publish only after a push to main
+    needs:
+      - build
+      - code-quality
+
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
