@@ -6,6 +6,7 @@ package main
 //go:generate go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 //go:generate protoc --go_out=./ --go-grpc_out=./ --proto_path=../../pb ../../pb/demo.proto
 
+
 import (
 	"context"
 	"fmt"
@@ -143,7 +144,7 @@ func main() {
 	var port string
 	mustMapEnv(&port, "PRODUCT_CATALOG_PORT")
 
-	log.Infof("Product Catalog gRPC server started on port: %s", port)
+	log.Infof("Product Catalog gRPC server is running on port...: %s", port)
 
 	ln, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
@@ -315,6 +316,10 @@ func createClient(ctx context.Context, svcAddr string) (*grpc.ClientConn, error)
 		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
 	)
 }
+
+//end of the program
+
+
 
 
 
