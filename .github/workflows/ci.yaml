@@ -4,6 +4,8 @@
 name: product-catalog-ci
 
 on:
+  workflow_dispatch:
+
   pull_request:
     branches:
       - main
@@ -16,8 +18,8 @@ permissions:
   contents: read
 
 jobs:
-
   build:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
@@ -33,15 +35,16 @@ jobs:
         working-directory: src/product-catalog
         run: go mod download
 
-      - name: Build
+      - name: Build application
         working-directory: src/product-catalog
         run: go build -o product-catalog-service main.go
 
-      - name: Unit tests
+      - name: Run unit tests
         working-directory: src/product-catalog
         run: go test -v ./...
 
   code-quality:
+    name: Code Quality
     runs-on: ubuntu-latest
 
     steps:
@@ -56,11 +59,11 @@ jobs:
           args: --timeout=5m
 
   docker:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
-
     needs: [build, code-quality]
 
-    # Publish only after code is merged into main
+    # Publish only on pushes to main, not on pull requests or manual runs
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
