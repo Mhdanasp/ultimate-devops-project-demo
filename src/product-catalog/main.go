@@ -144,7 +144,7 @@ func main() {
 	var port string
 	mustMapEnv(&port, "PRODUCT_CATALOG_PORT")
 
-	log.Infof("Product Catalog gRPC server is running on port: %s", port)
+	log.Infof("Product Catalog gRPC server is running on port...: %s", port)
 
 	ln, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
